@@ -1,0 +1,22 @@
+type: object
+title: Contact
+properties:
+  reference:
+    $ref: ./Reference.v1.yaml
+  firstname:
+    type: string
+  lastname:
+    type: string
+  email:
+    type: string
+  phone:
+    type: string
+  address:
+    $ref: ./Address.v1.yaml
+required:
+  - reference
+  - firstname
+  - lastname
+  - email
+  - phone
+  - address

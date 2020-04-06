@@ -1,0 +1,56 @@
+properties:
+  subscriptionId:
+    $ref: '#/components/schemas/UUID'
+  clientId:
+    type: string
+  endpoint:
+    type: string
+  topic:
+    type: string
+  pushMessages:
+    type: array
+    items:
+      $ref: '#/components/schemas/PushMessage'
+description: |
+  The Subscription object represents a successfully executed subscription. To connect to the
+  MQTT broker, either via WebSocket or using a direct MQTT socket, the presented endpoint
+  must be used. This endpoint must not be cached for other subscription, may, however, be
+  reused in case of a sudden disconnect. The reconnect must happen within 15 minutes after
+  disconnection though, otherwise the subscription will expire.
+
+  To connect to the MQTT server, the following setup must be used:
+
+  | MQTT parameter | Value |
+  | :--- | :--- |
+  | URL | Subscription::endpoint |
+  | clientId | Subscription::clientId |
+  | password | Valid JWT Token |
+  | qos | 0 or 1 |
+
+  It is recommended to connect the client as a _persistent_client_ to make sure that short
+  disconnects keep the subscription alive and prevent missing out on events being delivered.
+
+  The _pushMessages_ member may contain messages, that would have since been received using
+  the provided _query_ and the _lastTimestamp_ values of the SubscriptionRequest.
+allOf:
+  - $ref: ./SubscriptionRequest.v1.yaml
+  - type: object
+    properties:
+      subscriptionId:
+        $ref: ./UUID.v1.yaml
+      clientId:
+        type: string
+      endpoint:
+        type: string
+      topic:
+        type: string
+      pushMessages:
+        type: array
+        items:
+          $ref: ./PushMessage.v1.yaml
+    required:
+      - subscriptionId
+      - clientId
+      - endpoint
+      - topic
+title: Subscription

@@ -1,0 +1,12 @@
+type: object
+title: SubscriptionRequest
+properties:
+  query:
+    type: string
+  type:
+    $ref: ./SubscriptionType.v1.yaml
+  lastTimestamp:
+    $ref: ./Timestamp.v1.yaml
+required:
+  - query
+  - type

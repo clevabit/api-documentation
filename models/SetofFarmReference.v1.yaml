@@ -1,0 +1,4 @@
+title: SetofFarmReference
+type: array
+items:
+  $ref: ./FarmReference.v1.yaml

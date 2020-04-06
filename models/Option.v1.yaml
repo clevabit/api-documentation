@@ -1,0 +1,14 @@
+type: object
+title: Option
+properties:
+  name:
+    type: string
+  description:
+    type: string
+  reference:
+    $ref: ./Reference.v1.yaml
+required:
+  - name
+  - description
+  - reference
+description: ''

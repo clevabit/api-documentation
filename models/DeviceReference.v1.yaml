@@ -1,0 +1,3 @@
+title: DeviceReference
+allOf:
+  - $ref: ./NamedReference.v1.yaml

@@ -1,0 +1,14 @@
+type: object
+title: DeviceRegistration
+properties:
+  authCode:
+    type: string
+  name:
+    type: string
+  parent:
+    $ref: ./Reference.v1.yaml
+  externalId:
+    type: string
+required:
+  - authCode
+  - name

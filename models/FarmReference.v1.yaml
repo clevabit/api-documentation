@@ -1,0 +1,3 @@
+title: FarmReference
+allOf:
+  - $ref: ./NamedReference.v1.yaml

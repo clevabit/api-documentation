@@ -1,0 +1,4 @@
+title: PushMessageType
+type: string
+enum:
+  - measurement

@@ -1,0 +1,81 @@
+description: |
+  An optional timespan definition. If omitted or only populated with _rollup_
+  only the last value or the last aggregation, according to the defined rollup
+  value, of each data series will be returned.
+type: object
+title: Timespan
+properties:
+  rollup:
+    oneOf:
+      - type: string
+      - type: number
+    description: |
+      A value that defines the time interval in with values are aggregated according
+      to the requested aggregation(s). The value can be represented as a number of
+      seconds or as a string with the following format:
+      - 5s: number as seconds
+      - 5m: number as minutes
+      - 5h: number as hours
+      - 5d: number as days
+
+      If no value is specified or the given value is not available for the selected
+      time range, the backend will take the according default value for the time range
+      into account.
+
+      If _slices_ and _rollup_ is defined, _slices_ takes precedence and the value of
+      _rollup_ is ignored.
+  slices:
+    type: number
+    description: "A value that defines the number of time slices to create. To create the length of \na time slice, the backend will divide the defined time range by the given number\nof slices.\n\nIf _slices_ and _rollup_ is defined, _slices_ takes precedence and the value of\n_rollup_ is ignored.\n"
+  start:
+    oneOf:
+      - type: number
+      - $ref: ./Timestamp.v1.yaml
+    description: |
+      A value that defines the start of the requested time window. The value can be
+      represented as a UNIX timestamp (UTC) or as a string with the following format:
+      - [-]5s: number as seconds with represents _now - 5 seconds_
+      - [-]5m: number as minutes with represents _now - 5 minutes_
+      - [-]5h: number as hours with represents _now - 5 hours_
+      - [-]5d: number as days with represents _now - 5 days_
+
+      All values can be combined with a valid date-time string in the style of
+      _YYYY-MM-DD HH:mm:ss_ (time in 24h) or UNIX timestamp.
+
+      Combined values look like:
+
+      _2020-03-01 00:00:00 -6h_ or _1583020800 -6h_
+  end:
+    oneOf:
+      - type: number
+      - $ref: ./Timespan.v1.yaml
+    description: |
+      A value that defines the end of the requested time window. The value can be
+      represented as a UNIX timestamp (UTC) or as a string with the following format:
+      - [-]5s: number as seconds with represents _now - 5 seconds_
+      - [-]5m: number as minutes with represents _now - 5 minutes_
+      - [-]5h: number as hours with represents _now - 5 hours_
+      - [-]5d: number as days with represents _now - 5 days_
+
+      All values can be combined with a valid date-time string in the style of
+      _YYYY-MM-DD HH:mm:ss_ (time in 24h) or UNIX timestamp.
+
+      Combined values look like:
+
+      _2020-03-01 00:00:00 -6h_ or _1583020800 -6h_
+
+      If _end_ is defined, the timespan is considered a closed timespan. Therefore,
+      if _advance_ is set to true, _end_ has precedence over _advance_. That means,
+      any value defined for _advance_ is ignored on closed timespans.
+  advance:
+    type: boolean
+    description: |
+      An value that defines if the backend will create a websocket
+      push url, to automatically advance and push new metric rollups when they
+      become available.
+
+      If _end_ is defined, the timespan is considered a closed timespan. Therefore,
+      if _advance_ is set to true, _end_ has precedence over _advance_. That means,
+      any value defined for _advance_ is ignored on closed timespans.
+
+      Default is false.

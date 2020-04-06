@@ -1,0 +1,5 @@
+title: BarnsQuery
+type: object
+properties:
+  name:
+    type: string

@@ -1,0 +1,34 @@
+type: object
+title: Silo
+properties:
+  reference:
+    $ref: ./Reference.v1.yaml
+  parent:
+    $ref: ./Reference.v1.yaml
+  name:
+    type: string
+  volume:
+    type: number
+  height:
+    type: number
+  radius:
+    type: number
+  fillingLevel:
+    type: number
+  remaining:
+    type: number
+  content:
+    type: string
+  state:
+    $ref: ./SiloState.v1.yaml
+required:
+  - reference
+  - parent
+  - name
+  - volume
+  - height
+  - radius
+  - fillingLevel
+  - remaining
+  - content
+  - state

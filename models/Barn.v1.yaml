@@ -1,0 +1,16 @@
+type: object
+title: Barn
+properties:
+  reference:
+    $ref: ./Reference.v1.yaml
+  parent:
+    $ref: ./Reference.v1.yaml
+  name:
+    type: string
+  contact:
+    $ref: ./Contact.v1.yaml
+required:
+  - reference
+  - parent
+  - name
+  - contact

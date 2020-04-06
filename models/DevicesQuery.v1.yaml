@@ -1,0 +1,11 @@
+title: DevicesQuery
+type: object
+properties:
+  externalId:
+    type: string
+  serviceId:
+    type: string
+  name:
+    type: string
+  serialNumber:
+    type: string

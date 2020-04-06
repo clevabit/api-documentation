@@ -1,0 +1,5 @@
+type: object
+title: FarmsRequest
+properties:
+  query:
+    $ref: ./FarmsQuery.v1.yaml

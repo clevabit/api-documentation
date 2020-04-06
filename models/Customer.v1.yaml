@@ -1,0 +1,21 @@
+type: object
+title: Customer
+properties:
+  reference:
+    $ref: ./Reference.v1.yaml
+  parent:
+    $ref: ./Reference.v1.yaml
+  name:
+    type: string
+  address:
+    $ref: ./Address.v1.yaml
+  contact:
+    $ref: ./Contact.v1.yaml
+  shortname:
+    type: string
+required:
+  - reference
+  - name
+  - address
+  - contact
+  - shortname

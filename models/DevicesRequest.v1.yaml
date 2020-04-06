@@ -1,0 +1,5 @@
+type: object
+title: DevicesRequest
+properties:
+  query:
+    $ref: ./DevicesQuery.v1.yaml

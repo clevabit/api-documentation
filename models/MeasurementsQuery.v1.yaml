@@ -1,0 +1,9 @@
+type: object
+title: MeasurementsQuery
+properties:
+  queries:
+    type: array
+    items:
+      $ref: ./MeasurementQuery.v1.yaml
+required:
+  - queries

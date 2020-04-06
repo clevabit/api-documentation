@@ -1,0 +1,8 @@
+title: AggregationType
+type: string
+enum:
+  - median
+  - mean
+  - min
+  - max
+  - extremes

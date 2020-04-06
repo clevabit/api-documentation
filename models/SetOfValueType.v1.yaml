@@ -1,0 +1,4 @@
+title: SetOfValueType
+type: array
+items:
+  $ref: ./ValueType.v1.yaml

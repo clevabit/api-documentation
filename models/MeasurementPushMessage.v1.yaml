@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./PushMessage.v1.yaml
+  - type: object
+    properties:
+      created:
+        $ref: ./Timestamp.v1.yaml
+      valueType:
+        $ref: ./UUID.v1.yaml
+      value:
+        type: object
+    required:
+      - created
+      - valueType
+      - value
+title: MeasurementPushMessage

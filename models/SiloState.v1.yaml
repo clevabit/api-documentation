@@ -1,0 +1,8 @@
+title: SiloState
+type: string
+enum:
+  - full
+  - sufficient
+  - severe
+  - critical
+  - empty

@@ -1,0 +1,4 @@
+title: SetOfDataSeries
+type: array
+items:
+  $ref: ./Option.v1.yaml

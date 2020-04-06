@@ -1,0 +1,4 @@
+title: SetOfInterval
+type: array
+items:
+  $ref: ./Option.v1.yaml

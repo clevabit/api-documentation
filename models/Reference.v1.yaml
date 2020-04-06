@@ -1,0 +1,12 @@
+type: object
+title: Reference
+properties:
+  uri:
+    type: string
+  type:
+    $ref: ./ReferenceType.v1.yaml
+  ref:
+    type: string
+required:
+  - type
+  - ref

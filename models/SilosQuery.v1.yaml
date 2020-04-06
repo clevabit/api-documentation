@@ -1,0 +1,7 @@
+type: object
+title: SilosQuery
+properties:
+  name:
+    type: string
+  state:
+    $ref: ./SiloState.v1.yaml

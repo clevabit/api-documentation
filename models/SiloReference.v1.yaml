@@ -1,0 +1,3 @@
+title: SiloReference
+allOf:
+  - $ref: ./NamedReference.v1.yaml

@@ -1,7 +1,14 @@
-type: string
 title: UUID
-format: uuid
-description: |-
-  UUIDs in CBOR are encoded using as registered CBOR extension Tag 37 (https://github.com/lucas-clemente/cbor-specs/blob/master/uuid.md), which in itself if a combination of CBOR major type 6, the tag's id (37) and the major type 2 (bytestring), as well as the additional information of 16 (for 16 bytes). Following that header are the 16 actual data bytes representing the UUID.
+description: |
+  UUIDs in CBOR are encoded using as [registered CBOR extension Tag 37](https://github.com/lucas-clemente/cbor-specs/blob/master/uuid.md), which in itself if a combination of CBOR major type 6, the tag's id (37) and the major type 2 (bytestring), as well as the additional information of 16 (for 16 bytes). Following that header are the 16 actual data bytes representing the UUID.
 
-  While UUIDs in CBOR are represented as its own data type, in JSON UUIDs are to be represented as a string according to the RFC 4122 Section 3 specification (https://tools.ietf.org/html/rfc4122#section-3), as 8-4-4-4-12 hex encoding.
+  While UUIDs in CBOR are represented as its own data type, in JSON UUIDs are to be represented as a string according to the [RFC 4122 Section 3](https://tools.ietf.org/html/rfc4122#section-3) specification, as 8-4-4-4-12 hex encoding.
+oneOf:
+  - type: string
+  - type: array
+    description: A byte array
+    items:
+      type: number
+      minimum: 0
+      maximum: 255
+ 

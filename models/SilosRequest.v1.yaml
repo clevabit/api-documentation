@@ -1,0 +1,5 @@
+type: object
+title: SilosRequest
+properties:
+  query:
+    $ref: ./SilosQuery.v1.yaml

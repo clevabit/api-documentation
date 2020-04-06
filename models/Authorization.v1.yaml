@@ -1,0 +1,10 @@
+type: object
+title: Authorization
+properties:
+  token:
+    type: string
+  customer:
+    $ref: ./Reference.v1.yaml
+required:
+  - token
+  - customer

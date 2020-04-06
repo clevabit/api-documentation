@@ -1,0 +1,8 @@
+title: DataType
+type: string
+enum:
+  - float
+  - int
+  - uint
+  - string
+  - timestamp

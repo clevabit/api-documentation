@@ -1,0 +1,4 @@
+title: SetOfDeviceReference
+type: array
+items:
+  $ref: ./DeviceReference.v1.yaml

@@ -1,0 +1,14 @@
+title: ValueType
+description: |
+  A ValueType defines an existing measurement type in the authorized customer. This includes, but is not limited, to temperature, humidity, ammonia, and others.
+
+  The reference, coming of the Option object, is unique and can be cached.
+allOf:
+  - $ref: '#/components/schemas/Option'
+  - type: object
+    properties:
+      dataType:
+        $ref: '#/components/schemas/DataType'
+      unit:
+        type: string
+ 

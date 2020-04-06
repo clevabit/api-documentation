@@ -1,0 +1,13 @@
+type: object
+title: PushMessage
+properties:
+  messageType:
+    $ref: ./PushMessageType.v1.yaml
+  uuid:
+    $ref: ./UUID.v1.yaml
+  parent:
+    $ref: ./Reference.v1.yaml
+required:
+  - messageType
+  - uuid
+  - parent

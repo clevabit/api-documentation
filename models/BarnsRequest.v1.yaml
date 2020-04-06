@@ -1,0 +1,5 @@
+type: object
+title: BarnsRequest
+properties:
+  query:
+    $ref: ./BarnsQuery.v1.yaml

@@ -1,0 +1,21 @@
+type: object
+title: MeasurementQuery
+properties:
+  prefix:
+    type: string
+    description: |
+      The _prefix_ defines the beginning of the resulting data series. The actual
+      generated name will be combined from the given _prefix_ and the name of the
+      requested aggregation. That said, as an example, a prefix set to "temperature-"
+      and an aggregation of type "median" will generate a data series id of
+      "temperature-median" which contains the actual devices and metrics.
+  query:
+    type: string
+    description: |
+      Query according to the clevabit query specification:
+      https://www.clevabit.com/developers/#/?id=subscription-query-language.
+  timespan:
+    $ref: ./Timespan.v1.yaml
+required:
+  - prefix
+  - query

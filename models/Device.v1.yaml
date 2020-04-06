@@ -1,0 +1,21 @@
+type: object
+title: Device
+properties:
+  reference:
+    $ref: ./Reference.v1.yaml
+  parent:
+    $ref: ./Reference.v1.yaml
+  name:
+    type: string
+  serialNumber:
+    type: string
+  externalId:
+    type: string
+  serviceId:
+    type: string
+required:
+  - reference
+  - parent
+  - name
+  - serialNumber
+  - serviceId

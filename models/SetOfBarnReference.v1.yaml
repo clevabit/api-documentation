@@ -1,0 +1,4 @@
+title: SetOfBarnReference
+type: array
+items:
+  $ref: ./BarnReference.v1.yaml

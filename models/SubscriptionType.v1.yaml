@@ -1,0 +1,5 @@
+title: SubscriptionType
+type: string
+enum:
+  - mqtt
+  - websocket
