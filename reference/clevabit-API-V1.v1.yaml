@@ -11,35 +11,25 @@ info:
     The API uses standard HTTP verbs, and response codes.
   version: 1.0.0
 servers:
-  - description: |
-      The Sandbox provides demo data from testing devices, which are not
-      related to any real world customer. That said, the Sandbox cannot access real
-      customer data.
-
-      To login into the Sandbox, use the same application id and application key to
-      be used against the production environment, however username/email and password
-      are different and valid only with the sandbox environment.
-
-      Apart from that, the sandbox has one additional feature, which is not available in the
-      production environment. With an accept HTTP header in request set to application/json
-      you can ask the Sandbox version of the API to respond with JSON instead of CBOR
-      objects. This may make debugging of responses much easier.
-
-      Furthermore, the Sandbox has relaxed Rate Limits, therefore is suited for development
-      and debugging uses.
+  - description: Sandbox
     url: 'https://sandbox.clevabit.com/api/v1'
-  - description: |
-      The Production environment is used for real world requests, being directed towards real customer data.
-
-      This API must not be used for development or debugging.
+  - description: Production (EU)
     url: 'https://api-eu.clevabit.com/api/v1'
 paths:
   '/customers/{customerid}':
     get:
       summary: er
       tags: []
-      responses: {}
       operationId: get-customers-customerid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/cbor:
+              schema:
+                $ref: ../models/Customer.v1.yaml
+      security:
+        - Bearer Token: []
     parameters:
       - schema:
           type: string
@@ -52,8 +42,49 @@ paths:
     post:
       summary: auth
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/cbor:
+              schema:
+                $ref: ../models/Authorization.v1.yaml
       operationId: post-auth
+      requestBody:
+        description: |
+          | Form Field | Value | Required |
+          | :---  | :--- | :--- |
+          | email | The account's email address | true |
+          | password | The account's password | true |
+          | shortname | The customer's shortname | true |
+          | csrftoken | The CSRF Token generated and sent by the login form | false |
+          | referrer | The URL to redirect to after an successful login | false |
+        content:
+          application/x-www-form-urlencoded:
+            schema: {}
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-app-id
+          description: 'The application id is a UUID, which is provided as a string according to [REF 4122 Section 3](https://tools.ietf.org/html/rfc4122#section-3) in 5 groups separated by hyphens, in the form of 8-4-4-4-12, with characters being lower case.'
+        - schema:
+            type: string
+          in: header
+          name: x-app-key
+          description: 'The application key is a random string, 64 characters long. The value is case sensitive.'
+        - schema:
+            type: string
+          in: header
+          name: x-app-cid
+          description: 'The customer id is the UUID of customer to login with. The UUID is encoded according to the RFC 4122, same as x-app-id.'
+      description: |
+        The Authorization endpoint is used to execute an actual login. A set of
+        username/email and password (credentials) is only valid when combined with a customer's
+        "shortname", which is provided by request.
+
+        If no _csrftoken_ is provided in the form fields, the _application id (x-app-id)_, _application
+        key (x-app-key)_ and _customer id (x-app-cid)_ headers must be set.
 components:
   schemas: null
   securitySchemes:
