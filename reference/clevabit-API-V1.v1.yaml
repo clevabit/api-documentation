@@ -36,22 +36,10 @@ servers:
 paths:
   '/customers/{customerid}':
     get:
-      summary: test
-      responses:
-        '200':
-          description: All ok
-          content:
-            application/cbor:
-              schema:
-                $ref: '#/components/schemas/Customer'
-      description: |-
-        This endpoint retrieves basic information on the customer specified by _{customerid}_.
-
-        The logged in account needs to have access to the respective customer and permissions
-        to view the information.
-      operationId: get-all-customers
-      security:
-        - Bearer Token: []
+      summary: er
+      tags: []
+      responses: {}
+      operationId: get-customers-customerid
     parameters:
       - schema:
           type: string
@@ -60,8 +48,14 @@ paths:
         in: path
         required: true
         description: "The customer's UUID"
+  /auth:
+    post:
+      summary: auth
+      tags: []
+      responses: {}
+      operationId: post-auth
 components:
-  schemas:
+  schemas: null
   securitySchemes:
     Bearer Token:
       type: http
