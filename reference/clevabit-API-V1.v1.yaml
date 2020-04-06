@@ -1,0 +1,664 @@
+openapi: 3.0.0
+info:
+  title: clevabit API
+  description: |
+    The clevabit API is organized around the [REST](http://en.wikipedia.org/wiki/Representational_State_Transfer) principle. It features predictable resource-oriented HTTP URLs.
+
+    While all request bodies are expected in JSON encoded request objects, all responses provided
+    by the API are encoded as [CBOR](https://www.clevabit.com/developers/#/?id=cbor)
+    objects, except stated otherwise.
+
+    The API uses standard HTTP verbs, and response codes.
+  version: 1.0.0
+servers:
+  - description: |
+      The Sandbox provides demo data from testing devices, which are not
+      related to any real world customer. That said, the Sandbox cannot access real
+      customer data.
+
+      To login into the Sandbox, use the same application id and application key to
+      be used against the production environment, however username/email and password
+      are different and valid only with the sandbox environment.
+
+      Apart from that, the sandbox has one additional feature, which is not available in the
+      production environment. With an accept HTTP header in request set to application/json
+      you can ask the Sandbox version of the API to respond with JSON instead of CBOR
+      objects. This may make debugging of responses much easier.
+
+      Furthermore, the Sandbox has relaxed Rate Limits, therefore is suited for development
+      and debugging uses.
+    url: 'https://sandbox.clevabit.com/api/v1'
+  - description: |
+      The Production environment is used for real world requests, being directed towards real customer data.
+
+      This API must not be used for development or debugging.
+    url: 'https://api-eu.clevabit.com/api/v1'
+paths:
+  '/customers/{customerid}':
+    get:
+      summary: test
+      responses:
+        '200':
+          description: All ok
+          content:
+            application/cbor:
+              schema:
+                $ref: '#/components/schemas/Customer'
+      description: |-
+        This endpoint retrieves basic information on the customer specified by _{customerid}_.
+
+        The logged in account needs to have access to the respective customer and permissions
+        to view the information.
+      operationId: get-all-customers
+      security:
+        - Bearer Token: []
+    parameters:
+      - schema:
+          type: string
+          format: uuid
+        name: customerid
+        in: path
+        required: true
+        description: "The customer's UUID"
+components:
+  schemas:
+    Authorization:
+      type: object
+      required:
+        - token
+        - customer
+      properties:
+        token:
+          type: string
+        customer:
+          $ref: '#/components/schemas/Reference'
+    Option:
+      type: object
+      required:
+        - name
+        - description
+        - reference
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        reference:
+          $ref: '#/components/schemas/Reference'
+    ValueType:
+      description: |
+        A ValueType defines an existing measurement type in the authorized customer. This includes, but is not limited, to temperature, humidity, ammonia, and others.
+
+        The reference, coming of the Option object, is unique and can be cached.
+      allOf:
+        - $ref: '#/components/schemas/Option'
+        - type: object
+          properties:
+            dataType:
+              $ref: '#/components/schemas/DataType'
+            unit:
+              type: string
+    Device:
+      type: object
+      required:
+        - reference
+        - parent
+        - name
+        - serialNumber
+        - serviceId
+      properties:
+        reference:
+          $ref: '#/components/schemas/Reference'
+        parent:
+          $ref: '#/components/schemas/Reference'
+        name:
+          type: string
+        serialNumber:
+          type: string
+        externalId:
+          type: string
+        serviceId:
+          type: string
+    Farm:
+      type: object
+      required:
+        - reference
+        - parent
+        - name
+        - contact
+      properties:
+        reference:
+          $ref: '#/components/schemas/Reference'
+        parent:
+          $ref: '#/components/schemas/Reference'
+        name:
+          type: string
+        contact:
+          $ref: '#/components/schemas/Contact'
+    Barn:
+      type: object
+      required:
+        - reference
+        - parent
+        - name
+        - contact
+      properties:
+        reference:
+          $ref: '#/components/schemas/Reference'
+        parent:
+          $ref: '#/components/schemas/Reference'
+        name:
+          type: string
+        contact:
+          $ref: '#/components/schemas/Contact'
+    Silo:
+      type: object
+      required:
+        - reference
+        - parent
+        - name
+        - volume
+        - height
+        - radius
+        - fillingLevel
+        - remaining
+        - state
+        - content
+      properties:
+        reference:
+          $ref: '#/components/schemas/Reference'
+        parent:
+          $ref: '#/components/schemas/Reference'
+        name:
+          type: string
+        volume:
+          type: number
+        height:
+          type: number
+        radius:
+          type: number
+        fillingLevel:
+          type: number
+        remaining:
+          type: number
+        content:
+          type: string
+        state:
+          $ref: '#/components/schemas/SiloState'
+    SiloState:
+      type: string
+      enum:
+        - full
+        - sufficient
+        - severe
+        - critical
+        - empty
+    Timestamp:
+      description: UNIX timestamp
+      type: number
+    UUID:
+      description: |
+        UUIDs in CBOR are encoded using as [registered CBOR extension Tag 37](https://github.com/lucas-clemente/cbor-specs/blob/master/uuid.md), which in itself if a combination of CBOR major type 6, the tag's id (37) and the major type 2 (bytestring), as well as the additional information of 16 (for 16 bytes). Following that header are the 16 actual data bytes representing the UUID.
+
+          While UUIDs in CBOR are represented as its own data type, in JSON UUIDs are to be represented as a string according to the [RFC 4122 Section 3](https://tools.ietf.org/html/rfc4122#section-3) specification, as 8-4-4-4-12 hex encoding.
+      oneOf:
+        - type: string
+        - type: array
+          description: A byte array
+          items:
+            type: number
+            minimum: 0
+            maximum: 255
+    ReferenceType:
+      type: string
+      enum:
+        - device
+        - customer
+        - farm
+        - barn
+        - compartment
+        - inlet
+        - animal
+        - dataseries
+        - interval
+        - partner
+        - valuetype
+        - datatype
+        - silo
+        - contact
+        - address
+    Reference:
+      required:
+        - type
+        - ref
+      type: object
+      properties:
+        uri:
+          type: string
+        type:
+          type: string
+        ref:
+          type: string
+    Customer:
+      type: object
+      required:
+        - reference
+        - name
+        - address
+        - contact
+        - shortname
+      properties:
+        reference:
+          $ref: '#/components/schemas/Reference'
+        parent:
+          $ref: '#/components/schemas/Reference'
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        contact:
+          $ref: '#/components/schemas/Contact'
+        shortname:
+          type: string
+    Contact:
+      type: object
+      required:
+        - reference
+        - firstname
+        - lastname
+        - email
+        - phone
+        - address
+      properties:
+        reference:
+          $ref: '#/components/schemas/Reference'
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+    Address:
+      type: object
+      required:
+        - reference
+        - address1
+        - address2
+        - zipcode
+        - city
+        - country
+      properties:
+        reference:
+          $ref: '#/components/schemas/Reference'
+        address1:
+          type: string
+        address2:
+          type: string
+        zipcode:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+    PushMessageType:
+      type: string
+      enum:
+        - measurement
+    PushMessage:
+      type: object
+      required:
+        - messageType
+        - uuid
+        - parent
+      properties:
+        messageType:
+          $ref: '#/components/schemas/PushMessageType'
+        uuid:
+          $ref: '#/components/schemas/UUID'
+        parent:
+          $ref: '#/components/schemas/Reference'
+    MeasurementPushMessage:
+      allOf:
+        - $ref: '#/components/schemas/PushMessage'
+        - type: object
+          properties:
+            created:
+              $ref: '#/components/schemas/Timestamp'
+            valueType:
+              $ref: '#/components/schemas/UUID'
+            value:
+              type: object
+          required:
+            - created
+            - valueType
+            - value
+    NamedReference:
+      allOf:
+        - $ref: '#/components/schemas/Reference'
+        - type: object
+          required:
+            - name
+          properties:
+            name:
+              type: string
+    DeviceReference:
+      allOf:
+        - $ref: '#/components/schemas/NamedReference'
+    FarmReference:
+      allOf:
+        - $ref: '#/components/schemas/NamedReference'
+    BarnReference:
+      allOf:
+        - $ref: '#/components/schemas/NamedReference'
+    SiloReference:
+      $ref: '#/components/schemas/NamedReference'
+    SetOfInterval:
+      type: array
+      items:
+        $ref: '#/components/schemas/Option'
+    SetOfValueType:
+      type: array
+      items:
+        $ref: '#/components/schemas/ValueType'
+    SetOfDataSeries:
+      type: array
+      items:
+        $ref: '#/components/schemas/Option'
+    SetOfDeviceReference:
+      type: array
+      items:
+        $ref: '#/components/schemas/DeviceReference'
+    SetofFarmReference:
+      type: array
+      items:
+        $ref: '#/components/schemas/FarmReference'
+    SetOfBarnReference:
+      type: array
+      items:
+        $ref: '#/components/schemas/BarnReference'
+    DeviceRegistration:
+      type: object
+      required:
+        - authCode
+        - name
+      properties:
+        authCode:
+          type: string
+        name:
+          type: string
+        parent:
+          $ref: '#/components/schemas/Reference'
+        externalId:
+          type: string
+    SubscriptionType:
+      type: string
+      enum:
+        - mqtt
+        - websocket
+    SubscriptionRequest:
+      type: object
+      required:
+        - query
+        - type
+      properties:
+        query:
+          type: string
+        type:
+          $ref: '#/components/schemas/SubscriptionType'
+        lastTimestamp:
+          $ref: '#/components/schemas/Timestamp'
+    Subscription:
+      allOf:
+        - $ref: '#/components/schemas/SubscriptionRequest'
+        - type: object
+          required:
+            - subscriptionId
+            - clientId
+            - endpoint
+            - topic
+          properties:
+            subscriptionId:
+              $ref: '#/components/schemas/UUID'
+            clientId:
+              type: string
+            endpoint:
+              type: string
+            topic:
+              type: string
+            pushMessages:
+              type: array
+              items:
+                $ref: '#/components/schemas/PushMessage'
+      description: |
+        The Subscription object represents a successfully executed subscription. To connect to the
+        MQTT broker, either via WebSocket or using a direct MQTT socket, the presented endpoint
+        must be used. This endpoint must not be cached for other subscription, may, however, be
+        reused in case of a sudden disconnect. The reconnect must happen within 15 minutes after
+        disconnection though, otherwise the subscription will expire.
+
+        To connect to the MQTT server, the following setup must be used:
+
+        | MQTT parameter | Value |
+        | :--- | :--- |
+        | URL | Subscription::endpoint |
+        | clientId | Subscription::clientId |
+        | password | Valid JWT Token |
+        | qos | 0 or 1 |
+
+        It is recommended to connect the client as a _persistent_client_ to make sure that short
+        disconnects keep the subscription alive and prevent missing out on events being delivered.
+
+        The _pushMessages_ member may contain messages, that would have since been received using
+        the provided _query_ and the _lastTimestamp_ values of the SubscriptionRequest.
+      required:
+        - subscriptionId
+        - clientId
+        - endpoint
+        - topic
+      properties:
+        subscriptionId:
+          $ref: '#/components/schemas/UUID'
+        clientId:
+          type: string
+        endpoint:
+          type: string
+        topic:
+          type: string
+        pushMessages:
+          type: array
+          items:
+            $ref: '#/components/schemas/PushMessage'
+    DevicesQuery:
+      type: object
+      properties:
+        externalId:
+          type: string
+        serviceId:
+          type: string
+        name:
+          type: string
+        serialNumber:
+          type: string
+    DevicesRequest:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/DevicesQuery'
+    FarmsQuery:
+      type: object
+      properties:
+        name:
+          type: string
+    FarmsRequest:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/FarmsQuery'
+    BarnsQuery:
+      type: object
+      properties:
+        name:
+          type: string
+    BarnsRequest:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/BarnsQuery'
+    SilosQuery:
+      type: object
+      properties:
+        name:
+          type: string
+        state:
+          $ref: '#/components/schemas/SiloState'
+    SilosRequest:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/SilosQuery'
+    MeasurementQuery:
+      type: object
+      required:
+        - prefix
+        - query
+      properties:
+        prefix:
+          type: string
+          description: |
+            The _prefix_ defines the beginning of the resulting data series. The actual
+            generated name will be combined from the given _prefix_ and the name of the
+            requested aggregation. That said, as an example, a prefix set to "temperature-"
+            and an aggregation of type "median" will generate a data series id of
+            "temperature-median" which contains the actual devices and metrics.
+        query:
+          type: string
+          description: |
+            Query according to the clevabit query specification:
+            https://www.clevabit.com/developers/#/?id=subscription-query-language.
+        timespan:
+          $ref: '#/components/schemas/Timespan'
+    Timespan:
+      type: object
+      description: |
+        An optional timespan definition. If omitted or only populated with _rollup_
+        only the last value or the last aggregation, according to the defined rollup
+        value, of each data series will be returned.
+      properties:
+        rollup:
+          oneOf:
+            - type: string
+            - type: number
+          description: |
+            A value that defines the time interval in with values are aggregated according
+            to the requested aggregation(s). The value can be represented as a number of
+            seconds or as a string with the following format:
+            - 5s: number as seconds
+            - 5m: number as minutes
+            - 5h: number as hours
+            - 5d: number as days
+
+            If no value is specified or the given value is not available for the selected
+            time range, the backend will take the according default value for the time range
+            into account.
+
+            If _slices_ and _rollup_ is defined, _slices_ takes precedence and the value of
+            _rollup_ is ignored.
+        slices:
+          type: number
+          description: "A value that defines the number of time slices to create. To create the length of \na time slice, the backend will divide the defined time range by the given number\nof slices.\n\nIf _slices_ and _rollup_ is defined, _slices_ takes precedence and the value of\n_rollup_ is ignored.\n"
+        start:
+          oneOf:
+            - type: number
+            - $ref: '#/components/schemas/Timestamp'
+          description: |
+            A value that defines the start of the requested time window. The value can be
+            represented as a UNIX timestamp (UTC) or as a string with the following format:
+            - [-]5s: number as seconds with represents _now - 5 seconds_
+            - [-]5m: number as minutes with represents _now - 5 minutes_
+            - [-]5h: number as hours with represents _now - 5 hours_
+            - [-]5d: number as days with represents _now - 5 days_
+
+            All values can be combined with a valid date-time string in the style of
+            _YYYY-MM-DD HH:mm:ss_ (time in 24h) or UNIX timestamp.
+
+            Combined values look like:
+
+            _2020-03-01 00:00:00 -6h_ or _1583020800 -6h_
+        end:
+          oneOf:
+            - type: number
+            - $ref: '#/components/schemas/Timestamp'
+          description: |
+            A value that defines the end of the requested time window. The value can be
+            represented as a UNIX timestamp (UTC) or as a string with the following format:
+            - [-]5s: number as seconds with represents _now - 5 seconds_
+            - [-]5m: number as minutes with represents _now - 5 minutes_
+            - [-]5h: number as hours with represents _now - 5 hours_
+            - [-]5d: number as days with represents _now - 5 days_
+
+            All values can be combined with a valid date-time string in the style of
+            _YYYY-MM-DD HH:mm:ss_ (time in 24h) or UNIX timestamp.
+
+            Combined values look like:
+
+            _2020-03-01 00:00:00 -6h_ or _1583020800 -6h_
+
+            If _end_ is defined, the timespan is considered a closed timespan. Therefore,
+            if _advance_ is set to true, _end_ has precedence over _advance_. That means,
+            any value defined for _advance_ is ignored on closed timespans.
+        advance:
+          type: boolean
+          description: |
+            An value that defines if the backend will create a websocket
+            push url, to automatically advance and push new metric rollups when they
+            become available.
+
+            If _end_ is defined, the timespan is considered a closed timespan. Therefore,
+            if _advance_ is set to true, _end_ has precedence over _advance_. That means,
+            any value defined for _advance_ is ignored on closed timespans.
+
+            Default is false.
+    AggregationType:
+      type: string
+      enum:
+        - median
+        - mean
+        - min
+        - max
+        - extremes
+    MeasurementsQuery:
+      type: object
+      required:
+        - queries
+      properties:
+        queries:
+          type: array
+          items:
+            $ref: '#/components/schemas/MeasurementQuery'
+    DataType:
+      type: string
+      enum:
+        - float
+        - int
+        - uint
+        - string
+        - timestamp
+    Error:
+      type: object
+      required:
+        - message
+        - code
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+  securitySchemes:
+    Bearer Token:
+      type: http
+      scheme: bearer
+      description: "API calls to any endpoint other than _/auth/_ require a valid authorization token.\n\nBy default, the authorization request requires a valid CSRF (Cross Site Request Forgery)\ntoken, which is provided by the server and only valid for a single form submission. In\naddition the CSRF token is only valid for limited amount of time.\n\nFor applications that cannot show an HTML login form, or partner systems that use direct\nserver to server communication, the API provides a way to login a third party (user) by\nproviding its unique application id (_x-app-id_) and application key (_x-app-key_), as\nwell as the customer id (_x-app-cid_) it wants to be logged in with.\n\nRequests using the application id and application key to authenticate as a valid\nlogin mechanism, still need to provide a valid username/email address and password.\n\nFor partners reading data for multiple users, a special account with access to multiple\ncustomer accounts may be provided. Otherwise multiple requests (one per customer account)\nare required. \n\nTo request an application id and application key, please contact your clevabit\nrepresentative."

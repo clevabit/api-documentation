@@ -1,0 +1,18 @@
+type: string
+title: ReferenceType
+enum:
+  - device
+  - customer
+  - farm
+  - barn
+  - compartment
+  - inlet
+  - animal
+  - dataseries
+  - interval
+  - partner
+  - valuetype
+  - datatype
+  - silo
+  - contact
+  - address
