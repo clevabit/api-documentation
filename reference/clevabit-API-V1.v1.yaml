@@ -18,7 +18,7 @@ servers:
 paths:
   '/customers/{customerid}':
     get:
-      summary: er
+      summary: Get Customer By CustomerId
       tags:
         - customer
       operationId: get-customers-customerid
@@ -46,7 +46,7 @@ paths:
         description: "The customer's UUID"
   /auth:
     post:
-      summary: auth
+      summary: Logging In
       tags:
         - authentication
       responses:

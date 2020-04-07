@@ -2,6 +2,8 @@ description: |
   An optional timespan definition. If omitted or only populated with _rollup_
   only the last value or the last aggregation, according to the defined rollup
   value, of each data series will be returned.
+
+  If _start_ and _end_ is defined, _start_ must be before _end_ in time.
 type: object
 title: Timespan
 properties:
@@ -34,10 +36,10 @@ properties:
     description: |
       A value that defines the start of the requested time window. The value can be
       represented as a UNIX timestamp (UTC) or as a string with the following format:
-      - [-]5s: number as seconds with represents _now - 5 seconds_
-      - [-]5m: number as minutes with represents _now - 5 minutes_
-      - [-]5h: number as hours with represents _now - 5 hours_
-      - [-]5d: number as days with represents _now - 5 days_
+      - (-)5s: number as seconds with represents _now - 5 seconds_
+      - (-)5m: number as minutes with represents _now - 5 minutes_
+      - (-)5h: number as hours with represents _now - 5 hours_
+      - (-)5d: number as days with represents _now - 5 days_
 
       All values can be combined with a valid date-time string in the style of
       _YYYY-MM-DD HH:mm:ss_ (time in 24h) or UNIX timestamp.
@@ -52,10 +54,10 @@ properties:
     description: |
       A value that defines the end of the requested time window. The value can be
       represented as a UNIX timestamp (UTC) or as a string with the following format:
-      - [-]5s: number as seconds with represents _now - 5 seconds_
-      - [-]5m: number as minutes with represents _now - 5 minutes_
-      - [-]5h: number as hours with represents _now - 5 hours_
-      - [-]5d: number as days with represents _now - 5 days_
+      - (-)5s: number as seconds with represents _now - 5 seconds_
+      - (-)5m: number as minutes with represents _now - 5 minutes_
+      - (-)5h: number as hours with represents _now - 5 hours_
+      - (-)5d: number as days with represents _now - 5 days_
 
       All values can be combined with a valid date-time string in the style of
       _YYYY-MM-DD HH:mm:ss_ (time in 24h) or UNIX timestamp.
