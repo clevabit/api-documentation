@@ -93,6 +93,21 @@ paths:
         <!-- theme: warning -->
         > If no _csrftoken_ is provided in the form fields, the _application id (x-app-id)_, _application
         key (x-app-key)_ and _customer id (x-app-cid)_ headers must be set.
+  /data/:
+    get:
+      summary: Querying Metrics
+      tags:
+        - Metrics
+      responses: {}
+      operationId: get-data
+      description: 'This endpoint is used to query aggregated metrics. Multiple aggregations can be requested at a time, using the clevabit Query language.'
+      security:
+        - Bearer Token: []
+      requestBody:
+        content:
+          application/cbor:
+            schema:
+              $ref: ../models/MeasurementsQuery.v1.yaml
 components:
   schemas: null
   securitySchemes:
