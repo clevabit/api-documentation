@@ -26,4 +26,5 @@ for development and debugging uses.
 The Production environment is used for real world requests, being directed towards real
 customer data.
 
-**This API must not be used for development or debugging.**
+<!-- theme: danger -->
+> This API environment must not be used for development or debugging.

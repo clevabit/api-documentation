@@ -19,7 +19,8 @@ paths:
   '/customers/{customerid}':
     get:
       summary: er
-      tags: []
+      tags:
+        - customer
       operationId: get-customers-customerid
       responses:
         '200':
@@ -30,6 +31,11 @@ paths:
                 $ref: ../models/Customer.v1.yaml
       security:
         - Bearer Token: []
+      description: |-
+        This endpoint retrieves basic information on the customer specified by _{customerid}_.
+
+        The logged in account needs to have access to the respective customer and permissions
+        to view the information.
     parameters:
       - schema:
           type: string
@@ -41,7 +47,8 @@ paths:
   /auth:
     post:
       summary: auth
-      tags: []
+      tags:
+        - authentication
       responses:
         '200':
           description: OK
@@ -83,7 +90,8 @@ paths:
         username/email and password (credentials) is only valid when combined with a customer's
         "shortname", which is provided by request.
 
-        If no _csrftoken_ is provided in the form fields, the _application id (x-app-id)_, _application
+        <!-- theme: warning -->
+        > If no _csrftoken_ is provided in the form fields, the _application id (x-app-id)_, _application
         key (x-app-key)_ and _customer id (x-app-cid)_ headers must be set.
 components:
   schemas: null
