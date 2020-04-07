@@ -48,7 +48,7 @@ properties:
   end:
     oneOf:
       - type: number
-      - $ref: ./Timespan.v1.yaml
+      - $ref: ./Timestamp.v1.yaml
     description: |
       A value that defines the end of the requested time window. The value can be
       represented as a UNIX timestamp (UTC) or as a string with the following format:
