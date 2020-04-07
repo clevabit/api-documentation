@@ -9,7 +9,7 @@ those of JSON objects, supporting objects, lists, dictionaries and properties. T
 reason for using CBOR is the binary representation, variable length encoding of numeric
 values, as well as the easiness of encoders and decoders.
 
-The only exception is the [Sandbox](#sandbox) environment, which can be asked to return
+The only exception is the [Sandbox](02_Environments.md#sandbox) environment, which can be asked to return
 JSON objects instead.
 
 CBOR encoders and decoders are available for many programming languages and runtime
