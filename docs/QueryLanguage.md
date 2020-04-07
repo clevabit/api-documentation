@@ -1,4 +1,4 @@
-# QueryLanguage
+# Query Language
 
 The Subscription Query Language is a simple object type based language to define object
 updates being interested in.
@@ -6,7 +6,7 @@ updates being interested in.
 The syntax is defined to be easily understandable, parsable and writeable, and follows
 the following basic rules:
 
-```json
+```cquery
 <identifier>: <predicate>, <anotheridentifier>: <anotherpredicate>
 ```
 
@@ -72,7 +72,7 @@ To build a query, the following identifiers are defined:
 | value-type | UUID, LIST[UUID], * | false | Predicate to select a single, a list of, or all available value types. |
 
 The _device_ query identifier must be sent with all queries, building the base of the
-selection algorithm. The basic query can be as simple as: _device: *_.
+selection algorithm. The basic query can be as simple as: `device: *`.
 
 The only exception from this rule is the simple "select all" predicate, which consists of
 the _*_-sign (asterisk) only, without any identifier.
